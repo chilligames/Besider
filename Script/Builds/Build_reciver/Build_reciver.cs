@@ -24,181 +24,317 @@ public class Build_reciver : MonoBehaviour
     }
 
 
+
     IEnumerator Recive_data_map()
     {
 
-        yield return new WaitForSeconds(0.1f);
-
-        Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(Camera.main.transform.position.x), 0, Mathf.RoundToInt(Camera.main.transform.position.z)) }, result =>
+        while (true)
         {
 
-            if (All_build_recive.Length >= 1)
+            yield return new WaitForSeconds(0.1f);
+
+            Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(Camera.main.transform.position.x), 0, Mathf.RoundToInt(Camera.main.transform.position.z)) }, result =>
             {
-                foreach (var item in result.Builds)
+
+
+                if (All_build_recive.Length >= 1)
                 {
 
-
-                    Desrilse_build Info_build = new Desrilse_build
+                    foreach (var item in result.Builds)
                     {
-                        ID = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).ID,
-                        Name = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Name,
-                        Level = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Level,
-                        Storage = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Storage,
-                        Postion = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Postion,
-                        Health = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Health,
-                        Type_build = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Type_build
 
-                    };
 
-                    switch ((Build.Type_build)Info_build.Type_build)
-                    {
-                        case Build.Type_build.Build_wood:
-                            {
-                                bool Can_build = true;
-                                foreach (var Woods_build in GetComponentsInChildren<Wooder>())
+                        Desrilse_build Info_build = new Desrilse_build
+                        {
+                            ID = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).ID,
+                            Name = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Name,
+                            Level = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Level,
+                            Storage = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Storage,
+                            Postion = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Postion,
+                            Health = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Health,
+                            Type_build = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Type_build
+
+                        };
+
+                        var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+                        switch ((Build.Type_build)Info_build.Type_build)
+                        {
+                            case Build.Type_build.Build_wood:
                                 {
-                                    if (Woods_build.GetComponent<Wooder>().Setting_build.ID == Info_build.ID)
+
+                                    //cheak for new build
+                                    bool can_build = true;
+
+                                    foreach (var WoodBuilds in GetComponentsInChildren<Wooder>())
                                     {
-                                        Can_build = false;
+                                        if (WoodBuilds.GetComponent<Wooder>().Setting_build.ID == Info_build.ID)
+                                        {
+                                            can_build = false;
+                                            break;
+                                        }
+
                                     }
-                                }
 
-                                if (Can_build)
+                                    //build new build
+
+                                    if (can_build)
+                                    {
+                                        var old_build = All_build_recive;
+                                        All_build_recive = new GameObject[result.Builds.Length];
+
+                                        for (int A = 0; A < old_build.Length; A++)
+                                        {
+                                            All_build_recive[A] = old_build[A];
+                                        }
+                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        {
+                                            if (All_build_recive[i] == null)
+                                            {
+                                                All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
+                                                All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                {
+                                                    Health = Info_build.Health,
+                                                    Status_build = Build.Status_build.Befor_build,
+                                                    ID = Info_build.ID,
+                                                    Level = Info_build.Level,
+                                                    Name = Info_build.Name,
+                                                    postion_build = postion,
+                                                    Storage = Info_build.Storage
+
+                                                });
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+
+                                }
+                                break;
+                            case Build.Type_build.Build_food:
                                 {
-                                    print(Info_build.Name);
+                                    //cheak for new build
+                                    bool can_build = true;
+
+                                    foreach (var food_build in GetComponentsInChildren<Food_build>())
+                                    {
+                                        if (food_build.GetComponent<Food_build>().Setting_build.ID == Info_build.ID)
+                                        {
+                                            can_build = false;
+                                            break;
+                                        }
+
+                                    }
+
+                                    //build new build
+
+                                    if (can_build)
+                                    {
+                                        var old_build = All_build_recive;
+                                        All_build_recive = new GameObject[result.Builds.Length];
+
+                                        for (int A = 0; A < old_build.Length; A++)
+                                        {
+                                            All_build_recive[A] = old_build[A];
+                                        }
+                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        {
+                                            if (All_build_recive[i] == null)
+                                            {
+                                                All_build_recive[i] = Instantiate(Raw_food_build, postion, transform.rotation, transform);
+                                                All_build_recive[i].GetComponent<Food_build>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                {
+                                                    Health = Info_build.Health,
+                                                    Status_build = Build.Status_build.Befor_build,
+                                                    ID = Info_build.ID,
+                                                    Level = Info_build.Level,
+                                                    Name = Info_build.Name,
+                                                    postion_build = postion,
+                                                    Storage = Info_build.Storage
+
+                                                });
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+
                                 }
+                                break;
+                            case Build.Type_build.Build_stone:
+                                {
 
-                            }
-                            break;
-                        case Build.Type_build.Build_food:
-                            {
+                                    //cheak for new build
+                                    bool can_build = true;
 
-                            }
-                            break;
-                        case Build.Type_build.Build_stone:
-                            {
+                                    foreach (var stone_build in GetComponentsInChildren<Stone>())
+                                    {
+                                        if (stone_build.GetComponent<Stone>().Setting_build.ID == Info_build.ID)
+                                        {
+                                            can_build = false;
+                                            break;
+                                        }
 
-                            }
-                            break;
+                                    }
+
+                                    //build new build
+
+                                    if (can_build)
+                                    {
+                                        var old_build = All_build_recive;
+                                        All_build_recive = new GameObject[result.Builds.Length];
+
+                                        for (int A = 0; A < old_build.Length; A++)
+                                        {
+                                            All_build_recive[A] = old_build[A];
+                                        }
+                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        {
+                                            if (All_build_recive[i] == null)
+                                            {
+                                                All_build_recive[i] = Instantiate(Raw_stone_build, postion, transform.rotation, transform);
+                                                All_build_recive[i].GetComponent<Stone>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                {
+                                                    Health = Info_build.Health,
+                                                    Status_build = Build.Status_build.Befor_build,
+                                                    ID = Info_build.ID,
+                                                    Level = Info_build.Level,
+                                                    Name = Info_build.Name,
+                                                    postion_build = postion,
+                                                    Storage = Info_build.Storage
+
+                                                });
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+
+                                }
+                                break;
+                        }
+
                     }
 
                 }
-
-            }
-            else
-            {
-                All_build_recive = new GameObject[result.Builds.Length];
+                else
+                {
+                    All_build_recive = new GameObject[result.Builds.Length];
 
                     //desrilise from server
                     foreach (var item in result.Builds)
-                {
-                    Desrilse_build Info_build = new Desrilse_build
                     {
-                        ID = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).ID,
-                        Name = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Name,
-                        Level = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Level,
-                        Storage = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Storage,
-                        Postion = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Postion,
-                        Health = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Health,
-                        Type_build = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Type_build
+                        Desrilse_build Info_build = new Desrilse_build
+                        {
+                            ID = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).ID,
+                            Name = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Name,
+                            Level = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Level,
+                            Storage = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Storage,
+                            Postion = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Postion,
+                            Health = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Health,
+                            Type_build = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Type_build
 
-                    };
-
-                    print(Info_build.Name);
+                        };
 
 
                         //build 
                         switch ((Build.Type_build)Info_build.Type_build)
-                    {
-                        case Build.Type_build.Build_wood:
-                            {
-                                Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
-
-                                for (int i = 0; i < All_build_recive.Length; i++)
+                        {
+                            case Build.Type_build.Build_wood:
                                 {
-                                    if (All_build_recive[i] == null)
+                                    Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+
+                                    for (int i = 0; i < All_build_recive.Length; i++)
                                     {
-                                        All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
-                                        All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                        if (All_build_recive[i] == null)
                                         {
-                                            Status_build = Build.Status_build.Befor_build,
-                                            Health = Info_build.Health,
-                                            ID = Info_build.ID,
-                                            Level = Info_build.Level,
-                                            Name = Info_build.Name,
-                                            postion_build = postion,
-                                            Storage = Info_build.Storage
+                                            All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
+                                            All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                            {
+                                                Status_build = Build.Status_build.Befor_build,
+                                                Health = Info_build.Health,
+                                                ID = Info_build.ID,
+                                                Level = Info_build.Level,
+                                                Name = Info_build.Name,
+                                                postion_build = postion,
+                                                Storage = Info_build.Storage
 
-                                        });
+                                            });
 
-                                        break;
+                                            break;
+
+                                        }
+
+                                    }
+                                }
+                                break;
+                            case Build.Type_build.Build_food:
+                                {
+                                    Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+
+                                    for (int i = 0; i < All_build_recive.Length; i++)
+                                    {
+                                        if (All_build_recive[i] == null)
+                                        {
+                                            All_build_recive[i] = Instantiate(Raw_food_build, postion, transform.rotation, transform);
+                                            All_build_recive[i].GetComponent<Food_build>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                            {
+                                                Status_build = Build.Status_build.Befor_build,
+                                                Health = Info_build.Health,
+                                                ID = Info_build.ID,
+                                                Level = Info_build.Level,
+                                                Name = Info_build.Name,
+                                                postion_build = postion,
+                                                Storage = Info_build.Storage
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case Build.Type_build.Build_stone:
+                                {
+                                    Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+
+                                    for (int i = 0; i < All_build_recive.Length; i++)
+                                    {
+                                        if (All_build_recive[i] == null)
+                                        {
+                                            All_build_recive[i] = Instantiate(Raw_stone_build, postion, transform.rotation, transform);
+                                            All_build_recive[i].GetComponent<Stone>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                            {
+
+                                                Health = Info_build.Health,
+                                                ID = Info_build.ID,
+                                                Status_build = Build.Status_build.Befor_build,
+                                                Level = Info_build.Level,
+                                                Name = Info_build.Name,
+                                                postion_build = postion,
+                                                Storage = Info_build.Storage
+
+                                            });
+                                            break;
+                                        }
 
                                     }
 
                                 }
-                            }
-                            break;
-                        case Build.Type_build.Build_food:
-                            {
-                                Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+                                break;
 
-                                for (int i = 0; i < All_build_recive.Length; i++)
-                                {
-                                    if (All_build_recive[i] == null)
-                                    {
-                                        All_build_recive[i] = Instantiate(Raw_food_build, postion, transform.rotation, transform);
-                                        All_build_recive[i].GetComponent<Food_build>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
-                                        {
-                                            Status_build = Build.Status_build.Befor_build,
-                                            Health = Info_build.Health,
-                                            ID = Info_build.ID,
-                                            Level = Info_build.Level,
-                                            Name = Info_build.Name,
-                                            postion_build = postion,
-                                            Storage = Info_build.Storage
-                                        });
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case Build.Type_build.Build_stone:
-                            {
-                                Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+                        }
 
-                                for (int i = 0; i < All_build_recive.Length; i++)
-                                {
-                                    if (All_build_recive[i] == null)
-                                    {
-                                        All_build_recive[i] = Instantiate(Raw_stone_build, postion, transform.rotation, transform);
-                                        All_build_recive[i].GetComponent<Stone>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
-                                        {
-
-                                            Health = Info_build.Health,
-                                            ID = Info_build.ID,
-                                            Status_build = Build.Status_build.Befor_build,
-                                            Level = Info_build.Level,
-                                            Name = Info_build.Name,
-                                            postion_build = postion,
-                                            Storage = Info_build.Storage
-
-                                        });
-                                        break;
-                                    }
-
-                                }
-
-                            }
-                            break;
 
                     }
 
-
                 }
 
-            }
-
-        });
+            });
+        }
 
     }
 }
