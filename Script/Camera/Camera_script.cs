@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using static Server_side.User_data.Result_data.Result_recive_postion_info;
+
 public class Camera_script : MonoBehaviour
 {
     public float Speed_camera;
@@ -115,6 +116,21 @@ public class Camera_script : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(transform.position.x),0, Mathf.RoundToInt(transform.position.z)) });
+        Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.z)) }, result =>
+        {
+
+            foreach (var item in result.Builds)
+            {
+
+                Desrilse_build Info_build = new Desrilse_build
+                {
+                    Health = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Health
+
+                };
+
+                
+            }
+
+        });
     }
 }

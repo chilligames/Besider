@@ -194,7 +194,7 @@ public class Server_side
             }
         }
 
-        public static async void Recive_info_pos(Req_recive_info_pos req_Recive_Info_Pos)
+        public static async void Recive_info_pos(Req_recive_info_pos req_Recive_Info_Pos, Action<Result_recive_postion_info> Builds)
         {
             var www = UnityWebRequest.Get(map_url.Url_recive_info_pos);
             www.SetRequestHeader("postions", JsonUtility.ToJson(req_Recive_Info_Pos.postions_camera));
@@ -204,6 +204,10 @@ public class Server_side
             {
                 if (www.isDone)
                 {
+                    if (www.downloadHandler.text.Length >= 1)
+                    {
+                        Builds(ChilligamesJson.DeserializeObject<Result_recive_postion_info>(www.downloadHandler.text));
+                    }
                     break;
                 }
                 else
@@ -229,6 +233,21 @@ public class Server_side
                 public int Stone;
             }
 
+            public class Result_recive_postion_info
+            {
+                public object[] Builds;
+
+                public class Desrilse_build
+                {
+                    public string ID;
+                    public string Name;
+                    public int Level;
+                    public int Health;
+                    public int Storage;
+                    public object Postion;
+
+                }
+            }
 
         }
 
