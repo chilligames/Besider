@@ -27,7 +27,7 @@ public class Build_reciver : MonoBehaviour
 
     IEnumerator Recive_data_map()
     {
-
+        Vector3 Camera_pos = Camera.main.transform.position;
         while (true)
         {
 
@@ -35,11 +35,9 @@ public class Build_reciver : MonoBehaviour
 
             Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(Camera.main.transform.position.x), 0, Mathf.RoundToInt(Camera.main.transform.position.z)) }, result =>
             {
-
-
-                if (All_build_recive.Length >= 1)
+                if (All_build_recive.Length >= 1 && Camera.main.transform.position != Camera_pos)
                 {
-
+                    print("recive");
                     foreach (var item in result.Builds)
                     {
 
@@ -220,9 +218,10 @@ public class Build_reciver : MonoBehaviour
                         }
 
                     }
+                    Camera_pos = Camera.main.transform.position;
 
                 }
-                else
+                else if (All_build_recive.Length <= 0)
                 {
                     All_build_recive = new GameObject[result.Builds.Length];
 
