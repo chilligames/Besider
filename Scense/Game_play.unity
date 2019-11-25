@@ -569,8 +569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fae210c5133a7149a4836ede9aa3911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  C: {x: 0, y: 0}
-  N: {x: 1, y: 2}
 --- !u!1 &418177653
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,7 +1970,7 @@ GameObject:
   - component: {fileID: 1055786922}
   - component: {fileID: 1055786921}
   m_Layer: 0
-  m_Name: Builds_reciver
+  m_Name: Builds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1990,6 +1988,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d8a8b5fac9444d81aaeef9a027b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Raw_wood_build: {fileID: 1556255806926476259, guid: bd9eedf7b7ff6304b98f977790028517,
+    type: 3}
+  Raw_food_build: {fileID: 1696916041728221326, guid: 230ec42da30f7d0499c0a63851c8d554,
+    type: 3}
+  Raw_stone_build: {fileID: 5992704988311161753, guid: f0d7e22c62415da49ac7c0971bac9788,
+    type: 3}
+  All_build_recive: []
 --- !u!4 &1055786922
 Transform:
   m_ObjectHideFlags: 0
@@ -3306,7 +3311,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1108126751}
   m_HandleRect: {fileID: 1108126750}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3429,7 +3434,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 57688395}
   m_HandleRect: {fileID: 57688394}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

@@ -33,4 +33,11 @@ public abstract class Build : MonoBehaviour
         Frist_creat, Befor_build
     }
 
+
+    public enum Type_build
+    {
+        Build_wood,Build_food,Build_stone
+
+    }
+
 }

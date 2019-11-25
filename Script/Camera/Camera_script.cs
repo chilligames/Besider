@@ -6,14 +6,13 @@ using static Server_side.User_data.Result_data.Result_recive_postion_info;
 
 public class Camera_script : MonoBehaviour
 {
+
+
+    [Header("Setting")]
     public float Speed_camera;
     public int X, Y;
     public int pos_x, pos_z;
 
-    private void Start()
-    {
-        StartCoroutine(Recive_data_map());
-    }
     void Update()
     {
         //control camera with key
@@ -91,46 +90,4 @@ public class Camera_script : MonoBehaviour
 
     }
 
-    public Vector3[,] Camera_can_see
-    {
-        get
-        {
-            var frist_pos = new Vector3(transform.position.x + pos_x, transform.position.y, transform.position.z + pos_z);
-
-            var can_see = new Vector3[X, Y];
-            for (int i = 0; i < Y; i++)
-            {
-                for (int a = 0; a < X; a++)
-                {
-                    can_see[a, i] = new Vector3(frist_pos.x + a, 0, frist_pos.z + i);
-                }
-            }
-
-            return can_see;
-
-        }
-    }
-
-
-    IEnumerator Recive_data_map()
-    {
-        yield return new WaitForSeconds(1);
-
-        Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.z)) }, result =>
-        {
-
-            foreach (var item in result.Builds)
-            {
-
-                Desrilse_build Info_build = new Desrilse_build
-                {
-                    Health = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Health
-
-                };
-
-                
-            }
-
-        });
-    }
 }

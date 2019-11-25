@@ -245,7 +245,7 @@ public class Server_side
                     public int Health;
                     public int Storage;
                     public object Postion;
-
+                    public int Type_build;
                 }
             }
 
