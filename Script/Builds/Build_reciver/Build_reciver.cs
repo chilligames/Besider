@@ -17,31 +17,26 @@ public class Build_reciver : MonoBehaviour
     [Header("reciver info")]
     public GameObject[] All_build_recive;
 
-
+    Vector3 Camera_pos;
+    bool Lock_recive = true;
     private void Start()
     {
-        StartCoroutine(Recive_data_map());
+        Camera_pos = Camera.main.transform.position;
+        StartCoroutine(recive_data_postion());
     }
-
-
-
-    IEnumerator Recive_data_map()
+ 
+    IEnumerator recive_data_postion()
     {
-        Vector3 Camera_pos = Camera.main.transform.position;
         while (true)
         {
-
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
 
             Server_side.User_data.Recive_info_pos(new Server_side.Models.Req_recive_info_pos { postions_camera = new Vector3(Mathf.RoundToInt(Camera.main.transform.position.x), 0, Mathf.RoundToInt(Camera.main.transform.position.z)) }, result =>
             {
-                if (All_build_recive.Length >= 1 && Camera.main.transform.position != Camera_pos)
+                if (All_build_recive.Length >= 1 /*&& Camera.main.transform.position != Camera_pos*/)
                 {
-                    print("recive");
                     foreach (var item in result.Builds)
                     {
-
-
                         Desrilse_build Info_build = new Desrilse_build
                         {
                             ID = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).ID,
@@ -54,15 +49,14 @@ public class Build_reciver : MonoBehaviour
 
                         };
 
-                        var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
                         switch ((Build.Type_build)Info_build.Type_build)
                         {
                             case Build.Type_build.Build_wood:
                                 {
+                                    var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
 
                                     //cheak for new build
                                     bool can_build = true;
-
                                     foreach (var WoodBuilds in GetComponentsInChildren<Wooder>())
                                     {
                                         if (WoodBuilds.GetComponent<Wooder>().Setting_build.ID == Info_build.ID)
@@ -71,19 +65,26 @@ public class Build_reciver : MonoBehaviour
                                             break;
                                         }
 
+
                                     }
 
                                     //build new build
 
-                                    if (can_build)
+                                    if (can_build && Lock_recive)
                                     {
+                                        //lock recive
+                                        Lock_recive = false;
+
+                                        //recive work
                                         var old_build = All_build_recive;
-                                        All_build_recive = new GameObject[result.Builds.Length];
+
+                                        All_build_recive = new GameObject[result.Builds.Length + All_build_recive.Length];//cheack
 
                                         for (int A = 0; A < old_build.Length; A++)
                                         {
                                             All_build_recive[A] = old_build[A];
                                         }
+
                                         for (int i = 0; i < All_build_recive.Length; i++)
                                         {
                                             if (All_build_recive[i] == null)
@@ -107,12 +108,15 @@ public class Build_reciver : MonoBehaviour
 
                                     }
 
-
+                                    //recive unlock
+                                    Lock_recive = true;
                                 }
                                 break;
                             case Build.Type_build.Build_food:
                                 {
+
                                     //cheak for new build
+                                    var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
                                     bool can_build = true;
 
                                     foreach (var food_build in GetComponentsInChildren<Food_build>())
@@ -127,10 +131,14 @@ public class Build_reciver : MonoBehaviour
 
                                     //build new build
 
-                                    if (can_build)
+                                    if (can_build && Lock_recive)
                                     {
+                                        //lock recive
+                                        Lock_recive = false;
+
                                         var old_build = All_build_recive;
-                                        All_build_recive = new GameObject[result.Builds.Length];
+
+                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];//cheack
 
                                         for (int A = 0; A < old_build.Length; A++)
                                         {
@@ -156,21 +164,22 @@ public class Build_reciver : MonoBehaviour
                                             }
 
                                         }
-
                                     }
 
-
+                                    //unlock recive
+                                    Lock_recive = true;
                                 }
                                 break;
                             case Build.Type_build.Build_stone:
                                 {
 
+                                    var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
                                     //cheak for new build
                                     bool can_build = true;
 
-                                    foreach (var stone_build in GetComponentsInChildren<Stone>())
+                                    foreach (var Stone_build in GetComponentsInChildren<Stone>())
                                     {
-                                        if (stone_build.GetComponent<Stone>().Setting_build.ID == Info_build.ID)
+                                        if (Stone_build.GetComponent<Stone>().Setting_build.ID == Info_build.ID)
                                         {
                                             can_build = false;
                                             break;
@@ -180,10 +189,13 @@ public class Build_reciver : MonoBehaviour
 
                                     //build new build
 
-                                    if (can_build)
+                                    if (can_build && Lock_recive)
                                     {
+                                        //lock recive 
+                                        Lock_recive = false;
+
                                         var old_build = All_build_recive;
-                                        All_build_recive = new GameObject[result.Builds.Length];
+                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];//cheack
 
                                         for (int A = 0; A < old_build.Length; A++)
                                         {
@@ -210,18 +222,21 @@ public class Build_reciver : MonoBehaviour
 
                                         }
 
+
                                     }
 
-
+                                    //unlock recive
+                                    Lock_recive = true;
                                 }
                                 break;
                         }
 
                     }
+
                     Camera_pos = Camera.main.transform.position;
 
                 }
-                else if (All_build_recive.Length <= 0)
+                else if (All_build_recive.Length <= 0 && Lock_recive)
                 {
                     All_build_recive = new GameObject[result.Builds.Length];
 
@@ -334,6 +349,5 @@ public class Build_reciver : MonoBehaviour
 
             });
         }
-
     }
 }

@@ -7,6 +7,7 @@ public class Stone : Build
     public override void Change_value(Status_build status_Build, Setting_Build_ressures setting)
     {
         Setting_build.Status_build = status_Build;
+        Setting_build = setting;
         GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Level = 1, Health = 100, Name_build = "build" });
 
     }
