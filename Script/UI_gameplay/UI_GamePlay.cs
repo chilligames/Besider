@@ -21,6 +21,9 @@ public class UI_GamePlay : MonoBehaviour
     public TextMeshProUGUI Text_wood_number_value;
     public TextMeshProUGUI Text_stone_number_value;
 
+    public TextMeshProUGUI Text_wood_per_value;
+    public TextMeshProUGUI Text_food_per_value;
+    public TextMeshProUGUI Text_stone_per_value;
 
 
     [Header("Raw_objects")]
@@ -71,14 +74,24 @@ public class UI_GamePlay : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
 
-            Server_side.User_data.Recive_resource_value(new Server_side.Models.Req_Recive_resource_value { Password = "85245685", Username = "Hossyn" }, result =>
-                  {
-                      Text_wood_number_value.text = result.Wood.ToString();
-                      Text_food_number_value.text = result.Food.ToString();
-                      Text_stone_number_value.text = result.Stone.ToString();
-                  });
-        }
+            Server_side.User_data.Recive_value_per_Values(new Server_side.Models.Req_recive_per_value { Password = "85245685", Username = "Hossyn" },
+                result_per_value =>
+            {
+                Text_wood_per_value.text = result_per_value.Per_Value_Wood.ToString();
+                Text_food_per_value.text = result_per_value.Per_Value_Food.ToString();
+                Text_stone_per_value.text = result_per_value.Per_Value_Stone.ToString();
 
+
+
+            }, result_value =>
+            {
+                Text_wood_number_value.text = result_value.Wood.ToString();
+                Text_food_number_value.text = result_value.Food.ToString();
+                Text_stone_number_value.text = result_value.Stone.ToString();
+
+
+            });
+        }
     }
 
 }

@@ -46,6 +46,12 @@ public class Server_side
             public Vector3 postions_camera;
         }
 
+        public class Req_recive_per_value
+        {
+            public string Username;
+            public string Password;
+        }
+
     }
 
     public class User_data : MonoBehaviour
@@ -79,26 +85,28 @@ public class Server_side
             }
         }
 
-        public static async void Recive_resource_value(Req_Recive_resource_value recive_Resource_Value, Action<Result_recive_resource_value> Result)
+
+        
+        public static async void Recive_value_per_Values(Req_recive_per_value req_Recive_Per_Value, Action<Result_recive_resource_value.Deserilse_Per_values> Result_per_value, Action<Result_recive_resource_value.Deserilise_values> Result_values)
         {
-            var www = UnityWebRequest.Get(map_url.Url_recive_resource_value);
-            www.SetRequestHeader("username", recive_Resource_Value.Username);
-            www.SetRequestHeader("password", recive_Resource_Value.Password);
+            var www = UnityWebRequest.Get(map_url.Url_recive_resource_value_per_value);
+            www.SetRequestHeader("username", req_Recive_Per_Value.Username);
+            www.SetRequestHeader("password", req_Recive_Per_Value.Password);
             www.SendWebRequest();
             while (true)
             {
                 if (www.isDone)
                 {
-                    if (www.downloadHandler.text.Length > 2)
+
+                    if (www.downloadHandler.text.Length >= 1)
                     {
-                        Result(JsonUtility.FromJson<Result_recive_resource_value>(www.downloadHandler.text));
-                    }
-                    else
-                    {
-                        print("recive faild");
+                        var Deserilise_values = ChilligamesJson.DeserializeObject<Result_recive_resource_value>(www.downloadHandler.text);
+                        Result_per_value(ChilligamesJson.DeserializeObject<Result_recive_resource_value.Deserilse_Per_values>(Deserilise_values.Per_Values.ToString()));
+                        Result_values(ChilligamesJson.DeserializeObject<Result_recive_resource_value.Deserilise_values>(Deserilise_values.Values.ToString()));
                     }
 
                     break;
+
                 }
                 else
                 {
@@ -106,12 +114,12 @@ public class Server_side
                     {
                         www.Abort();
                         break;
+
                     }
                     await Task.Delay(1);
                 }
 
             }
-
 
         }
 
@@ -224,13 +232,28 @@ public class Server_side
         }
 
 
+
         public class Result_data
         {
             public class Result_recive_resource_value
             {
-                public int Wood;
-                public int Food;
-                public int Stone;
+                public object Values;
+                public object Per_Values;
+
+                public class Deserilise_values
+                {
+                    public int Wood;
+                    public int Food;
+                    public int Stone;
+
+                }
+                public class Deserilse_Per_values
+                {
+                    public int Per_Value_Wood;
+                    public int Per_Value_Food;
+                    public int Per_Value_Stone;
+
+                }
             }
 
             public class Result_recive_postion_info
@@ -249,6 +272,7 @@ public class Server_side
                 }
             }
 
+
         }
 
     }
@@ -257,11 +281,12 @@ public class Server_side
     {
         public string Url_login => "http://127.0.0.1:3333/Register";
 
-        public string Url_recive_resource_value => "http://127.0.0.1:3333/resource_value";
+        public string Url_recive_resource_value_per_value => "http://127.0.0.1:3333/resource_value";
         public string Url_creat_wood_build => "http://127.0.0.1:3333/creat_wood_build";
         public string Url_creat_food_build => "http://127.0.0.1:3333/creat_food_build";
         public string Url_creat_stone_build => "http://127.0.0.1:3333/creat_stone_build";
         public string Url_recive_info_pos => "http://127.0.0.1:3333/recive_data_pos";
+      
     }
 
 }
