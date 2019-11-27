@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 10756, guid: 0000000000000000e000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,16 +183,6 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 1.1
       objectReference: {fileID: 0}
-    - target: {fileID: 7744211106819010101, guid: 17df58d70ed4c1c42ad242977be45641,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7744211106819010101, guid: 17df58d70ed4c1c42ad242977be45641,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7744211106990454383, guid: 17df58d70ed4c1c42ad242977be45641,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -212,6 +202,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744211106819010101, guid: 17df58d70ed4c1c42ad242977be45641,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744211106819010101, guid: 17df58d70ed4c1c42ad242977be45641,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17df58d70ed4c1c42ad242977be45641, type: 3}

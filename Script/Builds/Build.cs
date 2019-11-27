@@ -37,7 +37,6 @@ public abstract class Build : MonoBehaviour
     public enum Type_build
     {
         Build_wood,Build_food,Build_stone
-
     }
 
 }

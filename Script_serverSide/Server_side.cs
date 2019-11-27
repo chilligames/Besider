@@ -51,6 +51,12 @@ public class Server_side
             public string Username;
             public string Password;
         }
+        public class Req_creat_storage
+        {
+            public string Username;
+            public string Passwod;
+            public Vector3 Postion;
+        }
 
     }
 
@@ -85,9 +91,7 @@ public class Server_side
             }
         }
 
-
-        
-        public static async void Recive_value_per_Values(Req_recive_per_value req_Recive_Per_Value, Action<Result_recive_resource_value.Deserilse_Per_values> Result_per_value, Action<Result_recive_resource_value.Deserilise_values> Result_values)
+        public static async void Recive_value_per_Values(Req_recive_per_value req_Recive_Per_Value, Action<Result_recive_resource_value.Deserilse_Per_values> Result_per_value, Action<Result_recive_resource_value.Deserilise_values> Result_values,Action<int> Storage)
         {
             var www = UnityWebRequest.Get(map_url.Url_recive_resource_value_per_value);
             www.SetRequestHeader("username", req_Recive_Per_Value.Username);
@@ -103,6 +107,7 @@ public class Server_side
                         var Deserilise_values = ChilligamesJson.DeserializeObject<Result_recive_resource_value>(www.downloadHandler.text);
                         Result_per_value(ChilligamesJson.DeserializeObject<Result_recive_resource_value.Deserilse_Per_values>(Deserilise_values.Per_Values.ToString()));
                         Result_values(ChilligamesJson.DeserializeObject<Result_recive_resource_value.Deserilise_values>(Deserilise_values.Values.ToString()));
+                        Storage(Deserilise_values.Storage);
                     }
 
                     break;
@@ -122,7 +127,6 @@ public class Server_side
             }
 
         }
-
 
         public static async void Creat_wood_build(req_Creat_wood_build req_Creat_Wood_Build)
         {
@@ -231,6 +235,30 @@ public class Server_side
             }
         }
 
+        public static async void Creat_storage(Req_creat_storage req_Creat_Storage)
+        {
+            var www = UnityWebRequest.Get(map_url.Url_creat_storage);
+            www.SetRequestHeader("username", req_Creat_Storage.Username);
+            www.SetRequestHeader("password", req_Creat_Storage.Passwod);
+            www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_Storage.Postion));
+            www.SendWebRequest();
+            while (true)
+            {
+                if (www.isDone)
+                {
+                    break;
+                }
+                else
+                {
+                    if (www.isHttpError || www.isNetworkError || www.timeout == 1)
+                    {
+                        www.Abort();
+                        break;
+                    }
+                    await Task.Delay(1);
+                }
+            }
+        }
 
 
         public class Result_data
@@ -239,6 +267,7 @@ public class Server_side
             {
                 public object Values;
                 public object Per_Values;
+                public int Storage;
 
                 public class Deserilise_values
                 {
@@ -286,7 +315,8 @@ public class Server_side
         public string Url_creat_food_build => "http://127.0.0.1:3333/creat_food_build";
         public string Url_creat_stone_build => "http://127.0.0.1:3333/creat_stone_build";
         public string Url_recive_info_pos => "http://127.0.0.1:3333/recive_data_pos";
-      
+        public string Url_creat_storage => "http://127.0.0.1:3333/creat_storage";
+
     }
 
 }

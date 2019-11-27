@@ -14,7 +14,7 @@ public class UI_GamePlay : MonoBehaviour
     public Button BTN_wood_build;
     public Button BTN_Stone_build;
     public Button BTN_meat_build;
-
+    public Button BTN_storage_build;
 
     [Header("resource_element")]
     public TextMeshProUGUI Text_food_number_value;
@@ -25,11 +25,16 @@ public class UI_GamePlay : MonoBehaviour
     public TextMeshProUGUI Text_food_per_value;
     public TextMeshProUGUI Text_stone_per_value;
 
+    public TextMeshProUGUI Text_storage_wood;
+    public TextMeshProUGUI Text_storage_food;
+    public TextMeshProUGUI Text_storage_stone;
+
 
     [Header("Raw_objects")]
     public GameObject Raw_wood_build;
     public GameObject Raw_stone_build;
     public GameObject Raw_meat_build;
+    public GameObject Raw_storage;
 
     private void Start()
     {
@@ -50,6 +55,11 @@ public class UI_GamePlay : MonoBehaviour
             Instantiate(Raw_meat_build).GetComponent<Food_build>().Change_value(Build.Status_build.Frist_creat, new Build.Setting_Build_ressures { });
         });
 
+        BTN_storage_build.onClick.AddListener(() =>
+        {
+            Instantiate(Raw_storage).GetComponent<raw_storage>().Change_value(Build.Status_build.Frist_creat, new Build.Setting_Build_ressures { });
+
+        });
 
         //recive data from server
         StartCoroutine(Recive_resource());
@@ -77,10 +87,10 @@ public class UI_GamePlay : MonoBehaviour
             Server_side.User_data.Recive_value_per_Values(new Server_side.Models.Req_recive_per_value { Password = "85245685", Username = "Hossyn" },
                 result_per_value =>
             {
+                //change value per value
                 Text_wood_per_value.text = result_per_value.Per_Value_Wood.ToString();
                 Text_food_per_value.text = result_per_value.Per_Value_Food.ToString();
                 Text_stone_per_value.text = result_per_value.Per_Value_Stone.ToString();
-
 
 
             }, result_value =>
@@ -90,7 +100,14 @@ public class UI_GamePlay : MonoBehaviour
                 Text_stone_number_value.text = result_value.Stone.ToString();
 
 
+            }, Storage =>
+            {
+                Text_storage_wood.text = Storage.ToString();
+                Text_storage_food.text = Storage.ToString();
+                Text_storage_stone.text = Storage.ToString();
+
             });
+
         }
     }
 
