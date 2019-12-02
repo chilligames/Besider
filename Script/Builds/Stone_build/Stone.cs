@@ -8,7 +8,7 @@ public class Stone : Build
     {
         Setting_build.Status_build = status_Build;
         Setting_build = setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Level = 1, Health = 100, Name_build = "build" });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Level = 1, Health = 100, Name_build = "build", Type = Type_build.Build_stone, ID_build = Setting_build.ID });
 
     }
 
@@ -30,7 +30,7 @@ public class Stone : Build
                         Setting_build.Status_build = Status_build.Befor_build;
 
                         //send req build in server
-                        Server_side.User_data.Creat_stone_build(new Server_side.Models.req_stone_build { Password = "85245685", Username = "Hossyn", Postion_build = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)) });
+                        Server_side.User_data.Creat_stone_build(new Server_side.Models.req_Creat_stone_build { Password = "85245685", Username = "Hossyn", Postion_build = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)),Type=Type_build.Build_stone });
                         Destroy(gameObject);
                     }
                     else if (Input.GetMouseButton(1))

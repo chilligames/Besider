@@ -8,7 +8,7 @@ public class Food_build : Build
     {
         Setting_build.Status_build = status_Build;
         Setting_build = setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Health = 100, Level = 1, Name_build = "build" });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Health = 100, Level = 1, Name_build = "build", ID_build = Setting_build.ID, Type = Type_build.Build_food });
 
     }
 
@@ -26,9 +26,9 @@ public class Food_build : Build
                     {
                         //change status build
                         Setting_build.Status_build = Status_build.Befor_build;
-                        
+
                         //send req to server
-                        Server_side.User_data.Creat_food_build(new Server_side.Models.req_Creat_food_build { Password = "85245685", Username = "Hossyn", Postion_build = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)) }); ;
+                        Server_side.User_data.Creat_food_build(new Server_side.Models.req_Creat_food_build { Password = "85245685", Username = "Hossyn", Postion_build = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)), Type = Type_build.Build_food }); ;
                         Destroy(gameObject);
                     }
                     else if (Input.GetMouseButton(1))

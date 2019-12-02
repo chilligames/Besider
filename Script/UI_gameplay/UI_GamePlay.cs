@@ -29,6 +29,10 @@ public class UI_GamePlay : MonoBehaviour
     public TextMeshProUGUI Text_storage_food;
     public TextMeshProUGUI Text_storage_stone;
 
+    public Slider Slider_wood;
+    public Slider Slider_food;
+    public Slider Slider_stone;
+
 
     [Header("Raw_objects")]
     public GameObject Raw_wood_build;
@@ -99,12 +103,21 @@ public class UI_GamePlay : MonoBehaviour
                 Text_food_number_value.text = result_value.Food.ToString();
                 Text_stone_number_value.text = result_value.Stone.ToString();
 
+                //change slider value
+                Slider_food.value = result_value.Food;
+                Slider_wood.value = result_value.Wood;
+                Slider_stone.value = result_value.Stone;
 
             }, Storage =>
             {
                 Text_storage_wood.text = Storage.ToString();
                 Text_storage_food.text = Storage.ToString();
                 Text_storage_stone.text = Storage.ToString();
+                
+                //change slider max
+                Slider_food.maxValue = Storage;
+                Slider_wood.maxValue = Storage;
+                Slider_stone.maxValue = Storage;
 
             });
 

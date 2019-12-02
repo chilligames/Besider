@@ -27,37 +27,45 @@ public class Server_side
             public string Username;
             public string Password;
             public Vector3 Postion_build;
+            public Build.Type_build Type;
         }
         public class req_Creat_food_build
         {
             public string Username;
             public string Password;
             public Vector3 Postion_build;
+            public Build.Type_build Type;
         }
-        public class req_stone_build
+        public class req_Creat_stone_build
         {
             public string Username;
             public string Password;
             public Vector3 Postion_build;
-        }
-
-        public class Req_recive_info_pos
-        {
-            public Vector3 postions_camera;
-        }
-
-        public class Req_recive_per_value
-        {
-            public string Username;
-            public string Password;
+            public Build.Type_build Type;
         }
         public class Req_creat_storage
         {
             public string Username;
             public string Passwod;
             public Vector3 Postion;
+            public Build.Type_build Type;
         }
-
+        public class Req_recive_info_pos
+        {
+            public Vector3 postions_camera;
+        }
+        public class Req_recive_per_value
+        {
+            public string Username;
+            public string Password;
+        }
+        public class Req_update_build
+        {
+            public string Username;
+            public string Password;
+            public string ID_Build;
+            public Build.Type_build Type_build;
+        }
     }
 
     public class User_data : MonoBehaviour
@@ -134,6 +142,7 @@ public class Server_side
             www.SetRequestHeader("username", req_Creat_Wood_Build.Username);
             www.SetRequestHeader("password", req_Creat_Wood_Build.Password);
             www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_Wood_Build.Postion_build));
+            www.SetRequestHeader("type_build",((int) req_Creat_Wood_Build.Type).ToString());
             www.SendWebRequest();
             while (true)
             {
@@ -154,12 +163,13 @@ public class Server_side
             }
         }
 
-        public static async void Creat_food_build(req_Creat_food_build req_Creat_Wood_Build)
+        public static async void Creat_food_build(req_Creat_food_build req_Creat_food_Build)
         {
             var www = UnityWebRequest.Get(map_url.Url_creat_food_build);
-            www.SetRequestHeader("username", req_Creat_Wood_Build.Username);
-            www.SetRequestHeader("password", req_Creat_Wood_Build.Password);
-            www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_Wood_Build.Postion_build));
+            www.SetRequestHeader("username", req_Creat_food_Build.Username);
+            www.SetRequestHeader("password", req_Creat_food_Build.Password);
+            www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_food_Build.Postion_build));
+            www.SetRequestHeader("type_build", ((int)req_Creat_food_Build.Type).ToString());
             www.SendWebRequest();
             while (true)
             {
@@ -180,18 +190,45 @@ public class Server_side
             }
         }
 
-        public static async void Creat_stone_build(req_stone_build req_Stone_Build)
+        public static async void Creat_stone_build(req_Creat_stone_build req_Stone_Build)
         {
             var www = UnityWebRequest.Get(map_url.Url_creat_stone_build);
             www.SetRequestHeader("username", req_Stone_Build.Username);
             www.SetRequestHeader("password", req_Stone_Build.Password);
             www.SetRequestHeader("postion", JsonUtility.ToJson(req_Stone_Build.Postion_build));
+            www.SetRequestHeader("type_build", ((int)req_Stone_Build.Type).ToString());
             www.SendWebRequest();
             while (true)
             {
                 if (www.isDone)
                 {
                     www.Abort();
+                    break;
+                }
+                else
+                {
+                    if (www.isHttpError || www.isNetworkError || www.timeout == 1)
+                    {
+                        www.Abort();
+                        break;
+                    }
+                    await Task.Delay(1);
+                }
+            }
+        }
+
+        public static async void Creat_storage(Req_creat_storage req_Creat_Storage)
+        {
+            var www = UnityWebRequest.Get(map_url.Url_creat_storage);
+            www.SetRequestHeader("username", req_Creat_Storage.Username);
+            www.SetRequestHeader("password", req_Creat_Storage.Passwod);
+            www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_Storage.Postion));
+            www.SetRequestHeader("type_build", ((int)req_Creat_Storage.Type).ToString());
+            www.SendWebRequest();
+            while (true)
+            {
+                if (www.isDone)
+                {
                     break;
                 }
                 else
@@ -235,12 +272,14 @@ public class Server_side
             }
         }
 
-        public static async void Creat_storage(Req_creat_storage req_Creat_Storage)
+
+        public static async void Update_build(Req_update_build req_Update_Build)
         {
-            var www = UnityWebRequest.Get(map_url.Url_creat_storage);
-            www.SetRequestHeader("username", req_Creat_Storage.Username);
-            www.SetRequestHeader("password", req_Creat_Storage.Passwod);
-            www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_Storage.Postion));
+            var www = UnityWebRequest.Get(map_url.Url_update_build);
+            www.SetRequestHeader("username", req_Update_Build.Username);
+            www.SetRequestHeader("password", req_Update_Build.Password);
+            www.SetRequestHeader("type_build",((int) req_Update_Build.Type_build).ToString());
+            www.SetRequestHeader("id_build", req_Update_Build.ID_Build);
             www.SendWebRequest();
             while (true)
             {
@@ -257,9 +296,10 @@ public class Server_side
                     }
                     await Task.Delay(1);
                 }
-            }
-        }
 
+            }
+
+        }
 
         public class Result_data
         {
@@ -316,7 +356,7 @@ public class Server_side
         public string Url_creat_stone_build => "http://127.0.0.1:3333/creat_stone_build";
         public string Url_recive_info_pos => "http://127.0.0.1:3333/recive_data_pos";
         public string Url_creat_storage => "http://127.0.0.1:3333/creat_storage";
-
+        public string Url_update_build => "http://127.0.0.1:3333/update_build";
     }
 
 }

@@ -11,7 +11,7 @@ public class Build_reciver : MonoBehaviour
     public GameObject Raw_wood_build;
     public GameObject Raw_food_build;
     public GameObject Raw_stone_build;
-
+    public GameObject Raw_storage_build;
 
 
     [Header("reciver info")]
@@ -24,7 +24,7 @@ public class Build_reciver : MonoBehaviour
         Camera_pos = Camera.main.transform.position;
         StartCoroutine(recive_data_postion());
     }
- 
+
     IEnumerator recive_data_postion()
     {
         while (true)
@@ -48,6 +48,8 @@ public class Build_reciver : MonoBehaviour
                             Type_build = ChilligamesJson.DeserializeObject<Desrilse_build>(item.ToString()).Type_build
 
                         };
+
+                  
 
                         switch ((Build.Type_build)Info_build.Type_build)
                         {
@@ -89,6 +91,7 @@ public class Build_reciver : MonoBehaviour
                                         {
                                             if (All_build_recive[i] == null)
                                             {
+                                              
                                                 All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
                                                 All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
                                                 {
@@ -98,7 +101,8 @@ public class Build_reciver : MonoBehaviour
                                                     Level = Info_build.Level,
                                                     Name = Info_build.Name,
                                                     postion_build = postion,
-                                                    Storage = Info_build.Storage
+                                                    Storage = Info_build.Storage,
+                                                    Type_build = Build.Type_build.Build_wood
 
                                                 });
                                                 break;
@@ -138,7 +142,7 @@ public class Build_reciver : MonoBehaviour
 
                                         var old_build = All_build_recive;
 
-                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];//cheack
+                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];
 
                                         for (int A = 0; A < old_build.Length; A++)
                                         {
@@ -157,7 +161,8 @@ public class Build_reciver : MonoBehaviour
                                                     Level = Info_build.Level,
                                                     Name = Info_build.Name,
                                                     postion_build = postion,
-                                                    Storage = Info_build.Storage
+                                                    Storage = Info_build.Storage,
+                                                    Type_build = Build.Type_build.Build_food
 
                                                 });
                                                 break;
@@ -195,7 +200,7 @@ public class Build_reciver : MonoBehaviour
                                         Lock_recive = false;
 
                                         var old_build = All_build_recive;
-                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];//cheack
+                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];
 
                                         for (int A = 0; A < old_build.Length; A++)
                                         {
@@ -214,7 +219,8 @@ public class Build_reciver : MonoBehaviour
                                                     Level = Info_build.Level,
                                                     Name = Info_build.Name,
                                                     postion_build = postion,
-                                                    Storage = Info_build.Storage
+                                                    Storage = Info_build.Storage,
+                                                    Type_build = Build.Type_build.Build_stone
 
                                                 });
                                                 break;
@@ -229,12 +235,71 @@ public class Build_reciver : MonoBehaviour
                                     Lock_recive = true;
                                 }
                                 break;
-                        }
+                            case Build.Type_build.Build_storage:
+                                {
 
+                                    var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
+                                    //cheak for new build
+                                    bool can_build = true;
+
+                                    foreach (var Storage in GetComponentsInChildren<raw_storage>())
+                                    {
+                                        if (Storage.GetComponent<raw_storage>().Setting_build.ID == Info_build.ID)
+                                        {
+                                            can_build = false;
+                                            break;
+                                        }
+
+                                    }
+
+                                    //build new build
+
+                                    if (can_build && Lock_recive)
+                                    {
+                                        //lock recive 
+                                        Lock_recive = false;
+
+                                        var old_build = All_build_recive;
+                                        All_build_recive = new GameObject[result.Builds.Length + old_build.Length];
+
+                                        for (int A = 0; A < old_build.Length; A++)
+                                        {
+                                            All_build_recive[A] = old_build[A];
+                                        }
+                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        {
+                                            if (All_build_recive[i] == null)
+                                            {
+                                                All_build_recive[i] = Instantiate(Raw_storage_build, postion, transform.rotation, transform);
+                                                All_build_recive[i].GetComponent<raw_storage>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                {
+                                                    Health = Info_build.Health,
+                                                    Status_build = Build.Status_build.Befor_build,
+                                                    ID = Info_build.ID,
+                                                    Level = Info_build.Level,
+                                                    Name = Info_build.Name,
+                                                    postion_build = postion,
+                                                    Storage = Info_build.Storage
+                                                    ,
+                                                    Type_build = Build.Type_build.Build_storage
+                                                });
+                                                break;
+                                            }
+
+                                        }
+
+
+                                    }
+
+                                    //unlock recive
+                                    Lock_recive = true;
+
+                                }
+                                break;
+                        }
                     }
 
                     Camera_pos = Camera.main.transform.position;
-
                 }
                 else if (All_build_recive.Length <= 0 && Lock_recive)
                 {
@@ -276,7 +341,8 @@ public class Build_reciver : MonoBehaviour
                                                 Level = Info_build.Level,
                                                 Name = Info_build.Name,
                                                 postion_build = postion,
-                                                Storage = Info_build.Storage
+                                                Storage = Info_build.Storage,
+                                                Type_build = Build.Type_build.Build_wood
 
                                             });
 
@@ -304,7 +370,8 @@ public class Build_reciver : MonoBehaviour
                                                 Level = Info_build.Level,
                                                 Name = Info_build.Name,
                                                 postion_build = postion,
-                                                Storage = Info_build.Storage
+                                                Storage = Info_build.Storage,
+                                                Type_build = Build.Type_build.Build_food
                                             });
                                             break;
                                         }
@@ -329,7 +396,8 @@ public class Build_reciver : MonoBehaviour
                                                 Level = Info_build.Level,
                                                 Name = Info_build.Name,
                                                 postion_build = postion,
-                                                Storage = Info_build.Storage
+                                                Storage = Info_build.Storage,
+                                                Type_build = Build.Type_build.Build_stone
 
                                             });
                                             break;

@@ -26,6 +26,7 @@ public abstract class Build : MonoBehaviour
         public int Health;
         public Vector3 postion_build;
         public Status_build Status_build;
+        public Type_build Type_build;
     }
 
     public enum Status_build
@@ -33,10 +34,9 @@ public abstract class Build : MonoBehaviour
         Frist_creat, Befor_build
     }
 
-
     public enum Type_build
     {
-        Build_wood,Build_food,Build_stone
+        Build_wood,Build_food,Build_stone,Build_storage
     }
 
 }

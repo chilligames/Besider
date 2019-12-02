@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,60 +8,80 @@ using UnityEngine.UI;
 
 public class Status_build_script : MonoBehaviour
 {
-    public Button BTN_show_total_info;
-    public Button BTN_hide_total_info;
+    public Button BTN_udpate;
 
-
-    public GameObject Quick_info;
-    public GameObject Tottal_info;
 
     public TextMeshProUGUI Text_namebuild;
     public Slider Slider_health;
-    public TextMeshProUGUI Text_level;
-
-    int anim_info;
 
     public void Change_value(Status_build Setting_status)
     {
         //change frist
-        Text_namebuild.text = Setting_status.Name_build;
-        Slider_health.maxValue = Setting_status.Health;
-        Text_level.text = Setting_status.Level.ToString();
+        Text_namebuild.text = Setting_status.Name_build + $"[{Setting_status.Level}]";
 
-        //action btns
-        BTN_show_total_info.onClick.AddListener(() =>
-        {
-            anim_info = 1;
-        });
 
-        BTN_hide_total_info.onClick.AddListener(() =>
+        Slider_health.value = Setting_status.Health;
+
+
+        switch (Setting_status.Type)
         {
-            anim_info = 2;
+            case Build.Type_build.Build_wood:
+                {
+                    BTN_udpate.onClick.AddListener(() =>
+                    {
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_wood, Username = "Hossyn" });
+                    });
+                }
+                break;
+            case Build.Type_build.Build_food:
+                {
+                    BTN_udpate.onClick.AddListener(() =>
+                    {
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_food, Username = "Hossyn" });
+                    });
+                }
+                break;
+            case Build.Type_build.Build_stone:
+                {
+                    BTN_udpate.onClick.AddListener(() =>
+                    {
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_stone, Username = "Hossyn" });
+                    });
+                }
+                break;
+            case Build.Type_build.Build_storage:
+                {
+                    BTN_udpate.onClick.AddListener(() =>
+                    {
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_storage, Username = "Hossyn" });
+                    });
+                }
+                break;
+        }
+
+        //change acation btn
+        BTN_udpate.onClick.AddListener(() =>
+        {
+            print("hi");
+            Server_side.User_data.Update_build(new Server_side.Models.Req_update_build
+            {
+                Username = "Hossyn",
+                Password = "85245685",
+                ID_Build = Setting_status.ID_build,
+                Type_build = Setting_status.Type
+            });
         });
+        
     }
 
+    
     void Update()
     {
         //fllow camera
-        transform.rotation = Quaternion.LookRotation(Camera.main.transform.position);
+        transform.rotation = Camera.main.transform.rotation;
 
         //scale gameobject in zoom
         gameObject.transform.localScale = new Vector3(Camera.main.fieldOfView / 100, Camera.main.fieldOfView / 100, 1);
-
-
-        //anim show info
-        if (anim_info == 1)
-        {
-            Tottal_info.transform.localScale = Vector3.MoveTowards(Tottal_info.transform.localScale, Vector3.one, 0.3f);
-            Quick_info.transform.localPosition = Vector3.MoveTowards(Quick_info.transform.localPosition, new Vector3(Quick_info.transform.localPosition.x, 11, Quick_info.transform.localPosition.z), 0.3f);
-        }
-        else if (anim_info == 2)
-        {
-            Tottal_info.transform.localScale = Vector3.MoveTowards(Tottal_info.transform.localScale, Vector3.zero, 0.3f);
-            Quick_info.transform.localPosition = Vector3.MoveTowards(Quick_info.transform.localPosition, Vector3.zero, 0.3f);
-        }
-
-
     }
 
 
@@ -68,8 +89,10 @@ public class Status_build_script : MonoBehaviour
     public struct Status_build
     {
         public string Name_build;
+        public string ID_build;
         public int Level;
         public int Health;
+        public Build.Type_build Type;
     }
 
 }

@@ -9,7 +9,7 @@ public class Wooder : Build
     {
         Setting_build.Status_build = status_Build;
         Setting_build = setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Name_build = Setting_build.Name, Health = Setting_build.Health, Level = Setting_build.Level });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Name_build = Setting_build.Name, Health = Setting_build.Health, Level = Setting_build.Level, ID_build = Setting_build.ID, Type =Type_build.Build_wood });
     }
 
 
@@ -21,7 +21,7 @@ public class Wooder : Build
             case Status_build.Frist_creat:
                 {
                     RaycastHit raycastHit;
-
+                    
                     var ray_for_creat = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                     Physics.Raycast(ray_for_creat, out raycastHit);
@@ -32,7 +32,7 @@ public class Wooder : Build
                         Setting_build.Status_build = Status_build.Befor_build;
 
                         //send req build
-                        Server_side.User_data.Creat_wood_build(new Server_side.Models.req_Creat_wood_build { Username = "Hossyn", Password = "85245685", Postion_build = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)) });
+                        Server_side.User_data.Creat_wood_build(new Server_side.Models.req_Creat_wood_build { Username = "Hossyn", Password = "85245685", Postion_build = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)),Type=Type_build.Build_wood });
                         Destroy(gameObject);
                     }
                     else if (Input.GetMouseButton(1))

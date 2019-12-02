@@ -9,7 +9,7 @@ public class raw_storage : Build
         Setting_build.Status_build = status_Build;
 
         Setting_build = Setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Health = Setting_build.Health, Level = Setting_build.Level, Name_build = Setting_build.Name });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Health = Setting_build.Health, Level = Setting_build.Level, Name_build = Setting_build.Name, ID_build = Setting_build.ID, Type = Type_build.Build_storage });
     }
 
     public override void Update()
@@ -30,15 +30,14 @@ public class raw_storage : Build
                         Setting_build.Status_build = Status_build.Befor_build;
 
                         //send req build in server
-                        Server_side.User_data.Creat_storage(new Server_side.Models.Req_creat_storage{ Passwod="85245685",Username="Hossyn",Postion=new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)) });
+                        Server_side.User_data.Creat_storage(new Server_side.Models.Req_creat_storage { Passwod = "85245685", Username = "Hossyn", Postion = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z)), Type = Type_build.Build_storage });
                         Destroy(gameObject);
-                        
+
                     }
                     else if (Input.GetMouseButton(1))
                     {
                         Destroy(gameObject);
                     }
-
                 }
                 break;
             case Status_build.Befor_build:
