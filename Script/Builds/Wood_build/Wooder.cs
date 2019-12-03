@@ -9,7 +9,7 @@ public class Wooder : Build
     {
         Setting_build.Status_build = status_Build;
         Setting_build = setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Name_build = Setting_build.Name, Health = Setting_build.Health, Level = Setting_build.Level, ID_build = Setting_build.ID, Type =Type_build.Build_wood });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build_setting { Name_build = Setting_build.Name, Health = Setting_build.Health, Level = Setting_build.Level, ID_build = Setting_build.ID, Type =Type_build.Build_wood });
     }
 
 

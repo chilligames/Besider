@@ -14,11 +14,14 @@ public class Status_build_script : MonoBehaviour
     public TextMeshProUGUI Text_namebuild;
     public Slider Slider_health;
 
-    public void Change_value(Status_build Setting_status)
-    {
-        //change frist
-        Text_namebuild.text = Setting_status.Name_build + $"[{Setting_status.Level}]";
+     Status_build_setting setting;
 
+    public void Change_value(Status_build_setting Setting_status)
+    {
+
+        //change frist
+        setting = Setting_status;
+        Text_namebuild.text = Setting_status.Name_build + $"[{Setting_status.Level}]";
 
         Slider_health.value = Setting_status.Health;
 
@@ -59,22 +62,9 @@ public class Status_build_script : MonoBehaviour
                 break;
         }
 
-        //change acation btn
-        BTN_udpate.onClick.AddListener(() =>
-        {
-            print("hi");
-            Server_side.User_data.Update_build(new Server_side.Models.Req_update_build
-            {
-                Username = "Hossyn",
-                Password = "85245685",
-                ID_Build = Setting_status.ID_build,
-                Type_build = Setting_status.Type
-            });
-        });
         
     }
-
-    
+   
     void Update()
     {
         //fllow camera
@@ -86,7 +76,7 @@ public class Status_build_script : MonoBehaviour
 
 
 
-    public struct Status_build
+    public struct Status_build_setting
     {
         public string Name_build;
         public string ID_build;

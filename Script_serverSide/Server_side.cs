@@ -66,6 +66,12 @@ public class Server_side
             public string ID_Build;
             public Build.Type_build Type_build;
         }
+        public class Req_recive_worker_detail
+        {
+            public string Username;
+            public string Password;
+        }
+
     }
 
     public class User_data : MonoBehaviour
@@ -99,7 +105,7 @@ public class Server_side
             }
         }
 
-        public static async void Recive_value_per_Values(Req_recive_per_value req_Recive_Per_Value, Action<Result_recive_resource_value.Deserilse_Per_values> Result_per_value, Action<Result_recive_resource_value.Deserilise_values> Result_values,Action<int> Storage)
+        public static async void Recive_value_per_Values(Req_recive_per_value req_Recive_Per_Value, Action<Result_recive_resource_value.Deserilse_Per_values> Result_per_value, Action<Result_recive_resource_value.Deserilise_values> Result_values, Action<int> Storage)
         {
             var www = UnityWebRequest.Get(map_url.Url_recive_resource_value_per_value);
             www.SetRequestHeader("username", req_Recive_Per_Value.Username);
@@ -142,7 +148,7 @@ public class Server_side
             www.SetRequestHeader("username", req_Creat_Wood_Build.Username);
             www.SetRequestHeader("password", req_Creat_Wood_Build.Password);
             www.SetRequestHeader("postion", JsonUtility.ToJson(req_Creat_Wood_Build.Postion_build));
-            www.SetRequestHeader("type_build",((int) req_Creat_Wood_Build.Type).ToString());
+            www.SetRequestHeader("type_build", ((int)req_Creat_Wood_Build.Type).ToString());
             www.SendWebRequest();
             while (true)
             {
@@ -278,7 +284,7 @@ public class Server_side
             var www = UnityWebRequest.Get(map_url.Url_update_build);
             www.SetRequestHeader("username", req_Update_Build.Username);
             www.SetRequestHeader("password", req_Update_Build.Password);
-            www.SetRequestHeader("type_build",((int) req_Update_Build.Type_build).ToString());
+            www.SetRequestHeader("type_build", ((int)req_Update_Build.Type_build).ToString());
             www.SetRequestHeader("id_build", req_Update_Build.ID_Build);
             www.SendWebRequest();
             while (true)
@@ -300,6 +306,37 @@ public class Server_side
             }
 
         }
+
+
+        public static async void Recive_worker_detail(Req_recive_worker_detail req_Recive_Worker_Detail, Action<Result_recive_worker_detail> result)
+        {
+            var www = UnityWebRequest.Get(map_url.Url_recive_worker_detail);
+            www.SetRequestHeader("username", req_Recive_Worker_Detail.Username);
+            www.SetRequestHeader("password", req_Recive_Worker_Detail.Password);
+            www.SendWebRequest();
+            while (true)
+            {
+                if (www.isDone)
+                {
+                    www.Abort();
+                    result(ChilligamesJson.DeserializeObject<Result_recive_worker_detail>(www.downloadHandler.text));
+                    break;
+                }
+                else
+                {
+                    if (www.isHttpError || www.isNetworkError || www.timeout == 1)
+                    {
+                        www.Abort();
+                        break;
+                    }
+                    await Task.Delay(1);
+
+                }
+
+            }
+
+        }
+
 
         public class Result_data
         {
@@ -341,7 +378,31 @@ public class Server_side
                 }
             }
 
+            public class Result_recive_worker_detail
+            {
+                public int Count_worker;
+                public int Count_work;
+                public object[] Updates;
 
+                public class Deserilse_updates
+                {
+                    public string ID_Build;
+                    public int To_level;
+                    public int Type_build;
+                    public int Time;
+                    public object Deserilze_time;
+                    public class Deserilse_time
+                    {
+                        public int Y;
+                        public int MO;
+                        public int D;
+
+                        public int H;
+                        public int M;
+                        public int S;
+                    }
+                }
+            }
         }
 
     }
@@ -357,6 +418,7 @@ public class Server_side
         public string Url_recive_info_pos => "http://127.0.0.1:3333/recive_data_pos";
         public string Url_creat_storage => "http://127.0.0.1:3333/creat_storage";
         public string Url_update_build => "http://127.0.0.1:3333/update_build";
+        public string Url_recive_worker_detail => "http://127.0.0.1:3333/recive_worker_detail";
     }
 
 }

@@ -8,7 +8,7 @@ public class Food_build : Build
     {
         Setting_build.Status_build = status_Build;
         Setting_build = setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Health = 100, Level = 1, Name_build = "build", ID_build = Setting_build.ID, Type = Type_build.Build_food });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build_setting { Health = 100, Level = 1, Name_build = "build", ID_build = Setting_build.ID, Type = Type_build.Build_food });
 
     }
 

@@ -9,7 +9,7 @@ public class raw_storage : Build
         Setting_build.Status_build = status_Build;
 
         Setting_build = Setting;
-        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build { Health = Setting_build.Health, Level = Setting_build.Level, Name_build = Setting_build.Name, ID_build = Setting_build.ID, Type = Type_build.Build_storage });
+        GetComponentInChildren<Status_build_script>().Change_value(new Status_build_script.Status_build_setting { Health = Setting_build.Health, Level = Setting_build.Level, Name_build = Setting_build.Name, ID_build = Setting_build.ID, Type = Type_build.Build_storage });
     }
 
     public override void Update()

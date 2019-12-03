@@ -49,7 +49,7 @@ public class Build_reciver : MonoBehaviour
 
                         };
 
-                  
+
 
                         switch ((Build.Type_build)Info_build.Type_build)
                         {
@@ -59,14 +59,22 @@ public class Build_reciver : MonoBehaviour
 
                                     //cheak for new build
                                     bool can_build = true;
-                                    foreach (var WoodBuilds in GetComponentsInChildren<Wooder>())
+                                    try
                                     {
-                                        if (WoodBuilds.GetComponent<Wooder>().Setting_build.ID == Info_build.ID)
+                                        foreach (var WoodBuilds in GetComponentsInChildren<Wooder>())
                                         {
-                                            can_build = false;
-                                            break;
+                                            if (WoodBuilds.GetComponent<Wooder>().Setting_build.ID == Info_build.ID)
+                                            {
+                                                can_build = false;
+                                                break;
+                                            }
+
+
                                         }
 
+                                    }
+                                    catch (System.Exception)
+                                    {
 
                                     }
 
@@ -87,26 +95,34 @@ public class Build_reciver : MonoBehaviour
                                             All_build_recive[A] = old_build[A];
                                         }
 
-                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        try
                                         {
-                                            if (All_build_recive[i] == null)
+                                            for (int i = 0; i < All_build_recive.Length; i++)
                                             {
-                                              
-                                                All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
-                                                All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                if (All_build_recive[i] == null)
                                                 {
-                                                    Health = Info_build.Health,
-                                                    Status_build = Build.Status_build.Befor_build,
-                                                    ID = Info_build.ID,
-                                                    Level = Info_build.Level,
-                                                    Name = Info_build.Name,
-                                                    postion_build = postion,
-                                                    Storage = Info_build.Storage,
-                                                    Type_build = Build.Type_build.Build_wood
 
-                                                });
-                                                break;
+                                                    All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
+                                                    All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                    {
+                                                        Health = Info_build.Health,
+                                                        Status_build = Build.Status_build.Befor_build,
+                                                        ID = Info_build.ID,
+                                                        Level = Info_build.Level,
+                                                        Name = Info_build.Name,
+                                                        postion_build = postion,
+                                                        Storage = Info_build.Storage,
+                                                        Type_build = Build.Type_build.Build_wood
+
+                                                    });
+                                                    break;
+                                                }
+
                                             }
+
+                                        }
+                                        catch (System.Exception)
+                                        {
 
                                         }
 
@@ -123,13 +139,21 @@ public class Build_reciver : MonoBehaviour
                                     var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
                                     bool can_build = true;
 
-                                    foreach (var food_build in GetComponentsInChildren<Food_build>())
+                                    try
                                     {
-                                        if (food_build.GetComponent<Food_build>().Setting_build.ID == Info_build.ID)
+
+                                        foreach (var food_build in GetComponentsInChildren<Food_build>())
                                         {
-                                            can_build = false;
-                                            break;
+                                            if (food_build.GetComponent<Food_build>().Setting_build.ID == Info_build.ID)
+                                            {
+                                                can_build = false;
+                                                break;
+                                            }
+
                                         }
+                                    }
+                                    catch (System.Exception)
+                                    {
 
                                     }
 
@@ -148,25 +172,33 @@ public class Build_reciver : MonoBehaviour
                                         {
                                             All_build_recive[A] = old_build[A];
                                         }
-                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        try
                                         {
-                                            if (All_build_recive[i] == null)
+                                            for (int i = 0; i < All_build_recive.Length; i++)
                                             {
-                                                All_build_recive[i] = Instantiate(Raw_food_build, postion, transform.rotation, transform);
-                                                All_build_recive[i].GetComponent<Food_build>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                if (All_build_recive[i] == null)
                                                 {
-                                                    Health = Info_build.Health,
-                                                    Status_build = Build.Status_build.Befor_build,
-                                                    ID = Info_build.ID,
-                                                    Level = Info_build.Level,
-                                                    Name = Info_build.Name,
-                                                    postion_build = postion,
-                                                    Storage = Info_build.Storage,
-                                                    Type_build = Build.Type_build.Build_food
+                                                    All_build_recive[i] = Instantiate(Raw_food_build, postion, transform.rotation, transform);
+                                                    All_build_recive[i].GetComponent<Food_build>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                    {
+                                                        Health = Info_build.Health,
+                                                        Status_build = Build.Status_build.Befor_build,
+                                                        ID = Info_build.ID,
+                                                        Level = Info_build.Level,
+                                                        Name = Info_build.Name,
+                                                        postion_build = postion,
+                                                        Storage = Info_build.Storage,
+                                                        Type_build = Build.Type_build.Build_food
 
-                                                });
-                                                break;
+                                                    });
+                                                    break;
+                                                }
+
                                             }
+
+                                        }
+                                        catch (System.Exception)
+                                        {
 
                                         }
                                     }
@@ -181,15 +213,21 @@ public class Build_reciver : MonoBehaviour
                                     var postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
                                     //cheak for new build
                                     bool can_build = true;
-
-                                    foreach (var Stone_build in GetComponentsInChildren<Stone>())
+                                    try
                                     {
-                                        if (Stone_build.GetComponent<Stone>().Setting_build.ID == Info_build.ID)
+                                        foreach (var Stone_build in GetComponentsInChildren<Stone>())
                                         {
-                                            can_build = false;
-                                            break;
+                                            if (Stone_build.GetComponent<Stone>().Setting_build.ID == Info_build.ID)
+                                            {
+                                                can_build = false;
+                                                break;
+                                            }
+
                                         }
 
+                                    }
+                                    catch (System.Exception)
+                                    {
                                     }
 
                                     //build new build
@@ -206,25 +244,33 @@ public class Build_reciver : MonoBehaviour
                                         {
                                             All_build_recive[A] = old_build[A];
                                         }
-                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        try
                                         {
-                                            if (All_build_recive[i] == null)
-                                            {
-                                                All_build_recive[i] = Instantiate(Raw_stone_build, postion, transform.rotation, transform);
-                                                All_build_recive[i].GetComponent<Stone>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
-                                                {
-                                                    Health = Info_build.Health,
-                                                    Status_build = Build.Status_build.Befor_build,
-                                                    ID = Info_build.ID,
-                                                    Level = Info_build.Level,
-                                                    Name = Info_build.Name,
-                                                    postion_build = postion,
-                                                    Storage = Info_build.Storage,
-                                                    Type_build = Build.Type_build.Build_stone
 
-                                                });
-                                                break;
+                                            for (int i = 0; i < All_build_recive.Length; i++)
+                                            {
+                                                if (All_build_recive[i] == null)
+                                                {
+                                                    All_build_recive[i] = Instantiate(Raw_stone_build, postion, transform.rotation, transform);
+                                                    All_build_recive[i].GetComponent<Stone>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                    {
+                                                        Health = Info_build.Health,
+                                                        Status_build = Build.Status_build.Befor_build,
+                                                        ID = Info_build.ID,
+                                                        Level = Info_build.Level,
+                                                        Name = Info_build.Name,
+                                                        postion_build = postion,
+                                                        Storage = Info_build.Storage,
+                                                        Type_build = Build.Type_build.Build_stone
+
+                                                    });
+                                                    break;
+                                                }
+
                                             }
+                                        }
+                                        catch (System.Exception)
+                                        {
 
                                         }
 
@@ -242,13 +288,21 @@ public class Build_reciver : MonoBehaviour
                                     //cheak for new build
                                     bool can_build = true;
 
-                                    foreach (var Storage in GetComponentsInChildren<raw_storage>())
+                                    try
                                     {
-                                        if (Storage.GetComponent<raw_storage>().Setting_build.ID == Info_build.ID)
+
+                                        foreach (var Storage in GetComponentsInChildren<raw_storage>())
                                         {
-                                            can_build = false;
-                                            break;
+                                            if (Storage.GetComponent<raw_storage>().Setting_build.ID == Info_build.ID)
+                                            {
+                                                can_build = false;
+                                                break;
+                                            }
+
                                         }
+                                    }
+                                    catch (System.Exception)
+                                    {
 
                                     }
 
@@ -266,25 +320,33 @@ public class Build_reciver : MonoBehaviour
                                         {
                                             All_build_recive[A] = old_build[A];
                                         }
-                                        for (int i = 0; i < All_build_recive.Length; i++)
+                                        try
                                         {
-                                            if (All_build_recive[i] == null)
+
+                                            for (int i = 0; i < All_build_recive.Length; i++)
                                             {
-                                                All_build_recive[i] = Instantiate(Raw_storage_build, postion, transform.rotation, transform);
-                                                All_build_recive[i].GetComponent<raw_storage>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                if (All_build_recive[i] == null)
                                                 {
-                                                    Health = Info_build.Health,
-                                                    Status_build = Build.Status_build.Befor_build,
-                                                    ID = Info_build.ID,
-                                                    Level = Info_build.Level,
-                                                    Name = Info_build.Name,
-                                                    postion_build = postion,
-                                                    Storage = Info_build.Storage
-                                                    ,
-                                                    Type_build = Build.Type_build.Build_storage
-                                                });
-                                                break;
+                                                    All_build_recive[i] = Instantiate(Raw_storage_build, postion, transform.rotation, transform);
+                                                    All_build_recive[i].GetComponent<raw_storage>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                    {
+                                                        Health = Info_build.Health,
+                                                        Status_build = Build.Status_build.Befor_build,
+                                                        ID = Info_build.ID,
+                                                        Level = Info_build.Level,
+                                                        Name = Info_build.Name,
+                                                        postion_build = postion,
+                                                        Storage = Info_build.Storage
+                                                        ,
+                                                        Type_build = Build.Type_build.Build_storage
+                                                    });
+                                                    break;
+                                                }
+
                                             }
+                                        }
+                                        catch (System.Exception)
+                                        {
 
                                         }
 
@@ -327,28 +389,35 @@ public class Build_reciver : MonoBehaviour
                             case Build.Type_build.Build_wood:
                                 {
                                     Vector3 postion = JsonUtility.FromJson<Vector3>(Info_build.Postion.ToString());
-
-                                    for (int i = 0; i < All_build_recive.Length; i++)
+                                    try
                                     {
-                                        if (All_build_recive[i] == null)
+                                        for (int i = 0; i < All_build_recive.Length; i++)
                                         {
-                                            All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
-                                            All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                            if (All_build_recive[i] == null)
                                             {
-                                                Status_build = Build.Status_build.Befor_build,
-                                                Health = Info_build.Health,
-                                                ID = Info_build.ID,
-                                                Level = Info_build.Level,
-                                                Name = Info_build.Name,
-                                                postion_build = postion,
-                                                Storage = Info_build.Storage,
-                                                Type_build = Build.Type_build.Build_wood
+                                                All_build_recive[i] = Instantiate(Raw_wood_build, postion, transform.rotation, transform);
+                                                All_build_recive[i].GetComponent<Wooder>().Change_value(Build.Status_build.Befor_build, new Build.Setting_Build_ressures
+                                                {
+                                                    Status_build = Build.Status_build.Befor_build,
+                                                    Health = Info_build.Health,
+                                                    ID = Info_build.ID,
+                                                    Level = Info_build.Level,
+                                                    Name = Info_build.Name,
+                                                    postion_build = postion,
+                                                    Storage = Info_build.Storage,
+                                                    Type_build = Build.Type_build.Build_wood
 
-                                            });
+                                                });
 
-                                            break;
+                                                break;
+
+                                            }
 
                                         }
+
+                                    }
+                                    catch (System.Exception)
+                                    {
 
                                     }
                                 }
