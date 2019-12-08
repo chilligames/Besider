@@ -15,7 +15,7 @@ public class UI_Update_area : MonoBehaviour
     public TextMeshProUGUI text_worker_count;
     public Transform place_update;
 
-    GameObject[] Workers;
+    public GameObject[] Worker;
 
     void Start()
     {
@@ -32,16 +32,52 @@ public class UI_Update_area : MonoBehaviour
                 //fill worker text count
                 text_worker_count.text = result.Count_worker + " / " + result.Count_work;
 
-                if (Workers == null)
+                if (Worker == null || Worker.Length <= 0)
                 {
-                    Workers = new GameObject[result.Updates.Length];
+                    print("F");
+                    Worker = new GameObject[result.Updates.Length];
 
                     for (int i = 0; i < result.Updates.Length; i++)
                     {
-                        Workers[i] = Instantiate(Raw_model_update_detail, place_update);
+                        Worker[i] = Instantiate(Raw_model_update_detail, place_update);
                         Server_side.User_data.Result_data.Result_recive_worker_detail.Deserilse_updates deserilse_Updates = ChilligamesJson.DeserializeObject<Server_side.User_data.Result_data.Result_recive_worker_detail.Deserilse_updates>(result.Updates[i].ToString());
-                        Workers[i].GetComponent<Raw_model_update_build>().Change_value_model_update(new Raw_model_update_build.Update_build { To_level = deserilse_Updates.To_level, type_Build = (Build.Type_build)deserilse_Updates.Type_build, time = deserilse_Updates.Deserilze_time.ToString()});
+                        Worker[i].GetComponent<Raw_model_update_build>().Change_value_model_update(new Raw_model_update_build.Update_build
+                        {
+                            To_level = deserilse_Updates.To_level,
+                            type_Build = (Build.Type_build)deserilse_Updates.Type_build,
+                            time = deserilse_Updates.Deserilze_time.ToString(),
+                            ID = deserilse_Updates.ID_Build
+                        });
                     }
+                }
+                else
+                {
+                    print(result.Updates.Length);
+                    var new_work = new GameObject[result.Updates.Length];
+
+                    foreach (var item in Worker)
+                    {
+                        for (int a = 0; a < new_work.Length; a++)
+                        {
+                            if (new_work[a] == null)
+                            {
+                                new_work[a] = item;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    for (int i = 0; i < new_work.Length; i++)
+                    {
+                        if (new_work[i]==null)
+                        {
+                            print("hi");
+                        }
+
+                    }
+
+                    //Worker = new_work;
                 }
 
             });
