@@ -14,7 +14,7 @@ public class Status_build_script : MonoBehaviour
     public TextMeshProUGUI Text_namebuild;
     public Slider Slider_health;
 
-     Status_build_setting setting;
+    Status_build_setting setting;
 
     public void Change_value(Status_build_setting Setting_status)
     {
@@ -22,17 +22,28 @@ public class Status_build_script : MonoBehaviour
         //change frist
         setting = Setting_status;
         Text_namebuild.text = Setting_status.Name_build + $"[{Setting_status.Level}]";
-
         Slider_health.value = Setting_status.Health;
 
 
+        //send data with update btn
         switch (Setting_status.Type)
         {
             case Build.Type_build.Build_wood:
                 {
                     BTN_udpate.onClick.AddListener(() =>
                     {
-                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_wood, Username = "Hossyn" });
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_wood, Username = "Hossyn" }, Result_update =>
+                        {
+                            UI_Update_area.GmUpdateArea.GetComponent<UI_Update_area>().UpdateNewBuild(new Raw_model_update_build.Update_build
+                            {
+                                ID = Result_update.ID_Build,
+                                time = Result_update.Deserilze_time.ToString(),
+                                To_level = Result_update.To_level,
+                                type_Build = (Build.Type_build)Result_update.Type_build
+                            });
+
+                        });
+
                     });
                 }
                 break;
@@ -40,7 +51,16 @@ public class Status_build_script : MonoBehaviour
                 {
                     BTN_udpate.onClick.AddListener(() =>
                     {
-                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_food, Username = "Hossyn" });
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_food, Username = "Hossyn" }, Result_update =>
+                        {
+                            UI_Update_area.GmUpdateArea.GetComponent<UI_Update_area>().UpdateNewBuild(new Raw_model_update_build.Update_build
+                            {
+                                ID = Result_update.ID_Build,
+                                time = Result_update.Deserilze_time.ToString(),
+                                To_level = Result_update.To_level,
+                                type_Build = (Build.Type_build)Result_update.Type_build
+                            });
+                        });
                     });
                 }
                 break;
@@ -48,7 +68,17 @@ public class Status_build_script : MonoBehaviour
                 {
                     BTN_udpate.onClick.AddListener(() =>
                     {
-                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_stone, Username = "Hossyn" });
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_stone, Username = "Hossyn" }, Result_update =>
+                        {
+
+                            UI_Update_area.GmUpdateArea.GetComponent<UI_Update_area>().UpdateNewBuild(new Raw_model_update_build.Update_build
+                            {
+                                ID = Result_update.ID_Build,
+                                time = Result_update.Deserilze_time.ToString(),
+                                To_level = Result_update.To_level,
+                                type_Build = (Build.Type_build)Result_update.Type_build
+                            });
+                        });
                     });
                 }
                 break;
@@ -56,15 +86,25 @@ public class Status_build_script : MonoBehaviour
                 {
                     BTN_udpate.onClick.AddListener(() =>
                     {
-                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_storage, Username = "Hossyn" });
+                        Server_side.User_data.Update_build(new Server_side.Models.Req_update_build { ID_Build = Setting_status.ID_build, Password = "85245685", Type_build = Build.Type_build.Build_storage, Username = "Hossyn" }, Result_update =>
+                        {
+                            UI_Update_area.GmUpdateArea.GetComponent<UI_Update_area>().UpdateNewBuild(new Raw_model_update_build.Update_build
+                            {
+                                ID = Result_update.ID_Build,
+                                time = Result_update.Deserilze_time.ToString(),
+                                To_level = Result_update.To_level,
+                                type_Build = (Build.Type_build)Result_update.Type_build
+                            });
+
+                        });
                     });
                 }
                 break;
         }
 
-        
+
     }
-   
+
     void Update()
     {
         //fllow camera

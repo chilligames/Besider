@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 471178823267010214}
   - component: {fileID: 471178823267010213}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: Icon_update
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1269,6 +1269,11 @@ MonoBehaviour:
   Text_time: {fileID: 471178824180213884}
   Text_level_to: {fileID: 471178823158448494}
   Slider_time: {fileID: 3942225371907131689}
+  Image_icon_update: {fileID: 471178823267010213}
+  Food_Icon: {fileID: 2800000, guid: fd7d8524796ff304c98e91c7cadd1815, type: 3}
+  Wood_Icon: {fileID: 2800000, guid: e1158fd3d133fea4d9088d4654af69c1, type: 3}
+  Stone_Icon: {fileID: 2800000, guid: 954e033fda76b9c4c8b016591de162fd, type: 3}
+  Storage_Icon: {fileID: 2800000, guid: 6061f5325548be746bef4d897067556f, type: 3}
 --- !u!1 &826567218217421819
 GameObject:
   m_ObjectHideFlags: 0

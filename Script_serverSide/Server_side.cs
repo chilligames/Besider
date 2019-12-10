@@ -279,7 +279,7 @@ public class Server_side
         }
 
 
-        public static async void Update_build(Req_update_build req_Update_Build)
+        public static async void Update_build(Req_update_build req_Update_Build, Action<Result_Update> Result_update)
         {
             var www = UnityWebRequest.Get(map_url.Url_update_build);
             www.SetRequestHeader("username", req_Update_Build.Username);
@@ -291,6 +291,10 @@ public class Server_side
             {
                 if (www.isDone)
                 {
+                    if (www.downloadHandler.text.Length > 2)
+                    {
+                        Result_update(ChilligamesJson.DeserializeObject<Result_Update>(www.downloadHandler.text));
+                    }
                     break;
                 }
                 else
@@ -376,6 +380,26 @@ public class Server_side
                     public object Postion;
                     public int Type_build;
                 }
+            }
+
+            public class Result_Update
+            {
+                public string ID_Build;
+                public int To_level;
+                public int Type_build;
+                public int Time;
+                public object Deserilze_time;
+                public class Deserilse_time
+                {
+                    public int Y;
+                    public int MO;
+                    public int D;
+
+                    public int H;
+                    public int M;
+                    public int S;
+                }
+
             }
 
             public class Result_recive_worker_detail
