@@ -13,12 +13,11 @@ public class UI_Update_area : MonoBehaviour
 
     [Header("Raw_model")]
     public GameObject Raw_model_update_detail;
-  
+
 
     [Header("Setting")]
     public TextMeshProUGUI text_worker_count;
     public Transform place_update;
-    public RawImage Image_icon_update;
 
     int Count_worker;
     int Count_work;
@@ -32,6 +31,50 @@ public class UI_Update_area : MonoBehaviour
 
         //start recive
         Recive_Frist_detail_workers();
+    }
+
+
+    public void Deletworker(string ID_build)
+    {
+
+        //fill worker with new worker
+        int count_fill = 0;
+
+        for (int i = 0; i < Worker.Length; i++)
+        {
+            if (Worker[i].GetComponent<Raw_model_update_build>().setting.ID == ID_build)
+            {
+                Worker[i] = null;
+            }
+            else
+            {
+                count_fill++;
+            }
+        }
+
+        var new_worker = new GameObject[count_fill];
+
+        for (int n = 0; n < Worker.Length; n++)
+        {
+            if (Worker[n] != null)
+            {
+                for (int i = 0; i < new_worker.Length; i++)
+                {
+                    if (new_worker[i] == null)
+                    {
+                        new_worker[i] = Worker[n];
+                        break;
+                    }
+                }
+            }
+        }
+
+        Worker = new_worker;
+
+        //change work count
+        Count_work -= 1;
+        text_worker_count.text = Count_worker + "/" + Count_work;
+
     }
 
     void Recive_Frist_detail_workers()
@@ -85,7 +128,7 @@ public class UI_Update_area : MonoBehaviour
                 old_workers[n].GetComponent<Raw_model_update_build>().Change_value_model_update(Detail_update);
             }
         }
-        
+
         Count_work++;
         text_worker_count.text = Count_worker + "/" + Count_work;
 

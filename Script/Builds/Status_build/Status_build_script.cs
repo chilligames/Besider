@@ -9,6 +9,11 @@ using UnityEngine.UI;
 public class Status_build_script : MonoBehaviour
 {
     public Button BTN_udpate;
+    public RawImage Image_icon;
+    public Texture Food_Icon;
+    public Texture Wood_Icon;
+    public Texture Stone_Icon;
+    public Texture Storage_Icon;
 
 
     public TextMeshProUGUI Text_namebuild;
@@ -45,6 +50,8 @@ public class Status_build_script : MonoBehaviour
                         });
 
                     });
+
+                    Image_icon.texture = Wood_Icon;
                 }
                 break;
             case Build.Type_build.Build_food:
@@ -62,6 +69,7 @@ public class Status_build_script : MonoBehaviour
                             });
                         });
                     });
+                    Image_icon.texture = Food_Icon;
                 }
                 break;
             case Build.Type_build.Build_stone:
@@ -80,6 +88,7 @@ public class Status_build_script : MonoBehaviour
                             });
                         });
                     });
+                    Image_icon.texture = Stone_Icon;
                 }
                 break;
             case Build.Type_build.Build_storage:
@@ -98,6 +107,7 @@ public class Status_build_script : MonoBehaviour
 
                         });
                     });
+                    Image_icon.texture = Storage_Icon;
                 }
                 break;
         }

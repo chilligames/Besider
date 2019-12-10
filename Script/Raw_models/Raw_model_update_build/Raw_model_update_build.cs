@@ -68,6 +68,16 @@ public class Raw_model_update_build : MonoBehaviour
             Slider_time.value = DateTime.Now.Second + (DateTime.Now.Minute * 60) + ((DateTime.Now.Hour * 60) * 60);
 
             Text_time.text = $"{Future_time.Hour} :{ Future_time.Minute }:{Future_time.Second} ";
+
+
+            //control destroy
+            if (Slider_time.value >= Slider_time.maxValue)
+            {
+                Destroy(gameObject);
+
+                UI_Update_area.GmUpdateArea.GetComponent<UI_Update_area>().Deletworker(setting.ID);
+            }
+
             yield return new WaitForSeconds(1);
         }
     }
@@ -80,6 +90,4 @@ public class Raw_model_update_build : MonoBehaviour
         public string ID;
         public Build.Type_build type_Build;
     }
-
-
 }

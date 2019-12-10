@@ -293,8 +293,14 @@ public class Server_side
                 {
                     if (www.downloadHandler.text.Length > 2)
                     {
+                        print(www.downloadHandler.text);
                         Result_update(ChilligamesJson.DeserializeObject<Result_Update>(www.downloadHandler.text));
                     }
+                    else
+                    {
+                        print("block");
+                    }
+                    www.Abort();
                     break;
                 }
                 else
