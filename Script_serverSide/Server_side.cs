@@ -296,10 +296,6 @@ public class Server_side
                         print(www.downloadHandler.text);
                         Result_update(ChilligamesJson.DeserializeObject<Result_Update>(www.downloadHandler.text));
                     }
-                    else
-                    {
-                        print("block");
-                    }
                     www.Abort();
                     break;
                 }

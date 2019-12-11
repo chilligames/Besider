@@ -15,6 +15,12 @@ public class Status_build_script : MonoBehaviour
     public Texture Stone_Icon;
     public Texture Storage_Icon;
 
+    public SpriteRenderer Map_icon;
+    public Sprite Sprit_Food_Icon;
+    public Sprite Sprit_Wood_Icon;
+    public Sprite Sprit_Stone_Icon;
+    public Sprite Sprit_Storage_Icon;
+
 
     public TextMeshProUGUI Text_namebuild;
     public Slider Slider_health;
@@ -52,6 +58,7 @@ public class Status_build_script : MonoBehaviour
                     });
 
                     Image_icon.texture = Wood_Icon;
+                    Map_icon.sprite = Sprit_Wood_Icon;
                 }
                 break;
             case Build.Type_build.Build_food:
@@ -70,6 +77,7 @@ public class Status_build_script : MonoBehaviour
                         });
                     });
                     Image_icon.texture = Food_Icon;
+                    Map_icon.sprite = Sprit_Food_Icon;
                 }
                 break;
             case Build.Type_build.Build_stone:
@@ -89,6 +97,7 @@ public class Status_build_script : MonoBehaviour
                         });
                     });
                     Image_icon.texture = Stone_Icon;
+                    Map_icon.sprite = Sprit_Stone_Icon;
                 }
                 break;
             case Build.Type_build.Build_storage:
@@ -108,6 +117,7 @@ public class Status_build_script : MonoBehaviour
                         });
                     });
                     Image_icon.texture = Storage_Icon;
+                    Map_icon.sprite = Sprit_Storage_Icon;
                 }
                 break;
         }
